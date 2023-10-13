@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+declare global {
+    interface Window {
+        Telegram:any;
+    }
+}
 const Telegram = window.Telegram
 // Init TWA
 Telegram.WebApp.ready();
