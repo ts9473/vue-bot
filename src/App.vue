@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { MainButton,useWebAppPopup } from "vue-tg"
 import HelloWorld from './components/HelloWorld.vue'
+const { showAlert } = useWebAppPopup()
+function handleMainButton() {
+  showAlert('Hello!')
+}
 </script>
 
 <template>
   <header>
+    <MainButton @click="handleMainButton" />
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
