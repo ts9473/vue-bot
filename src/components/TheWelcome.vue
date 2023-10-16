@@ -51,7 +51,7 @@ function toggleMainButton() {
 window.parent.postMessage(
   JSON.stringify({
     eventType: 'web_app_setup_back_button',
-    eventData: { is_visible: false }
+    eventData: { is_visible: true }
   }),
   'https://web.telegram.org'
 )
