@@ -48,12 +48,19 @@ function toggleMainButton() {
   }
 }
 
-window.parent.postMessage(
+// window.parent.postMessage(
+//   JSON.stringify({
+//     eventType: 'web_app_setup_back_button',
+//     eventData: { is_visible: true }
+//   }),
+//   'https://web.telegram.org'
+// )
+
+window.TelegramWebviewProxy.postEvent(
+  'web_app_setup_back_button',
   JSON.stringify({
-    eventType: 'web_app_setup_back_button',
-    eventData: { is_visible: true }
-  }),
-  'https://web.telegram.org'
+    is_visible: true
+  })
 )
 
 Telegram.WebApp.setHeaderColor('secondary_bg_color')
