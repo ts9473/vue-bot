@@ -1,6 +1,6 @@
 const Telegram = window.Telegram
 
-var DemoApp = {
+let DemoApp = {
   initData: Telegram.WebApp.initData || '',
   initDataUnsafe: Telegram.WebApp.initDataUnsafe || {},
   MainButton: Telegram.WebApp.MainButton,
@@ -182,7 +182,7 @@ var DemoApp = {
   }
 }
 
-var DemoAppMenu = {
+let DemoAppMenu = {
   init: function () {
     DemoApp.init()
     $('body').addClass('gray')
@@ -190,7 +190,7 @@ var DemoAppMenu = {
   }
 }
 
-var DemoAppInitData = {
+let DemoAppInitData = {
   init: function () {
     DemoApp.init()
     // $('body').addClass('gray');
@@ -205,7 +205,7 @@ var DemoAppInitData = {
   }
 }
 
-var DemoAppViewport = {
+let DemoAppViewport = {
   init: function () {
     DemoApp.init()
     // $('body').addClass('gray');

@@ -35,6 +35,7 @@
     <script src="https://tg.dev/js/bootstrap.min.js"></script>
     <script src="js/webappdemo.js"></script>
     <script>
+      console.log(DemoApp)
       Telegram.WebApp.onEvent('themeChanged', function () {
         $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2))
       })
