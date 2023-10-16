@@ -18,7 +18,8 @@
     <meta name="MobileOptimized" content="176" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="robots" content="noindex,nofollow" />
-    <script src="https://tg.dev/js/telegram-web-app.js?25"></script>
+    <script src="https://tg.dev/js/telegram-web-app.js"></script>
+    <!-- <script src="https://telegram.org/js/telegram-web-app.js"></script> -->
     <script>
       function setThemeClass() {
         document.documentElement.className = Telegram.WebApp.colorScheme
@@ -30,6 +31,108 @@
     <link href="https://tg.dev/css/bootstrap.min.css?3" rel="stylesheet" />
     <link href="https://tg.dev/css/bootstrap-extra.css?2" rel="stylesheet" />
     <link href="https://webappcontent.telegram.org/css/webappdemo.css?5" rel="stylesheet" />
+    <script src="https://tg.dev/js/jquery.min.js"></script>
+    <script src="https://tg.dev/js/bootstrap.min.js"></script>
+    <script src="js/webappdemo.js"></script>
+    <script>
+      Telegram.WebApp.onEvent('themeChanged', function () {
+        $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2))
+      })
+
+      $('#main_btn').toggle(!!DemoApp.initDataUnsafe.query_id)
+      $('#with_webview_btn').toggle(
+        !!DemoApp.initDataUnsafe.query_id && !DemoApp.initDataUnsafe.receiver
+      )
+      // $('#data_btn').toggle(!DemoApp.initDataUnsafe.query_id || !DemoApp.initDataUnsafe.receiver);
+      $('#webview_data').html(JSON.stringify(DemoApp.initDataUnsafe, null, 2))
+      $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2))
+      $('#regular_link').attr('href', $('#regular_link').attr('href') + location.hash)
+      $('#text_field').focus()
+
+      $('#ver').text(Telegram.WebApp.version)
+      $('#platform').text(Telegram.WebApp.platform)
+
+      if (DemoApp.initDataUnsafe.receiver) {
+        $('#peer_wrap').show()
+        $('#peer_name').text(
+          DemoApp.initDataUnsafe.receiver.first_name +
+            ' ' +
+            DemoApp.initDataUnsafe.receiver.last_name
+        )
+        if (DemoApp.initDataUnsafe.receiver.photo_url) {
+          $('#peer_photo').attr('src', DemoApp.initDataUnsafe.receiver.photo_url)
+        } else {
+          $('#peer_photo').hide()
+        }
+      } else if (DemoApp.initDataUnsafe.chat) {
+        $('#peer_wrap').show()
+        $('#peer_name').text(DemoApp.initDataUnsafe.chat.title)
+        if (DemoApp.initDataUnsafe.chat.photo_url) {
+          $('#peer_photo').attr('src', DemoApp.initDataUnsafe.chat.photo_url)
+        } else {
+          $('#peer_photo').hide()
+        }
+      }
+
+      DemoApp.checkInitData()
+
+      DemoApp.init()
+
+      function setViewportData() {
+        $('.viewport-border').attr(
+          'text',
+          window.innerWidth + ' x ' + round(Telegram.WebApp.viewportHeight, 2)
+        )
+        $('.viewport-stable_border').attr(
+          'text',
+          window.innerWidth +
+            ' x ' +
+            round(Telegram.WebApp.viewportStableHeight, 2) +
+            ' | is_expanded: ' +
+            (Telegram.WebApp.isExpanded ? 'true' : 'false')
+        )
+      }
+
+      Telegram.WebApp.setHeaderColor('secondary_bg_color')
+      Telegram.WebApp.onEvent('viewportChanged', setViewportData)
+      setViewportData()
+
+      var prev_bg_color_val = $('#bg_color_sel').val()
+      $('#bg_color_input').val(Telegram.WebApp.backgroundColor)
+      $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
+      $('#header_color_sel').val('secondary_bg_color')
+      $('#header_color_sel').on('change', function (e) {
+        var color_key = e.target.value
+        $('#top_sect').toggleClass('second', color_key == 'secondary_bg_color')
+        Telegram.WebApp.setHeaderColor(color_key)
+        $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
+      })
+      $('#bg_color_input').on('change', function (e) {
+        var color = e.target.value
+        $('#bg_color_val').text(color)
+        $('#bg_color_sel').val('custom')
+        prev_bg_color_val = $('#bg_color_sel').val()
+        Telegram.WebApp.setBackgroundColor(color)
+        $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
+      })
+      $('#bg_color_sel').on('change', function (e) {
+        var color_key = e.target.value
+        if (color_key == 'custom') {
+          $('#bg_color_sel').val(prev_bg_color_val)
+          $('#bg_color_input').focus().click()
+        } else {
+          $('#bg_color_val').text('custom...')
+          Telegram.WebApp.setBackgroundColor(color_key)
+          $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
+          $('#bg_color_input').val(Telegram.WebApp.backgroundColor)
+          prev_bg_color_val = $('#bg_color_sel').val()
+        }
+      })
+      Telegram.WebApp.onEvent('themeChanged', function () {
+        $('#bg_color_input').val(Telegram.WebApp.backgroundColor)
+        $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
+      })
+    </script>
   </head>
   <body
     class=""
@@ -190,107 +293,5 @@
     </section>
     <div class="viewport-border" text="1920 x 880"></div>
     <div class="viewport-stable_border" text="1920 x 880 | is_expanded: true"></div>
-    <script src="https://tg.dev/js/jquery.min.js"></script>
-    <script src="https://tg.dev/js/bootstrap.min.js"></script>
-    <script src="js/webappdemo.js"></script>
-    <script>
-      Telegram.WebApp.onEvent('themeChanged', function () {
-        $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2))
-      })
-
-      $('#main_btn').toggle(!!DemoApp.initDataUnsafe.query_id)
-      $('#with_webview_btn').toggle(
-        !!DemoApp.initDataUnsafe.query_id && !DemoApp.initDataUnsafe.receiver
-      )
-      // $('#data_btn').toggle(!DemoApp.initDataUnsafe.query_id || !DemoApp.initDataUnsafe.receiver);
-      $('#webview_data').html(JSON.stringify(DemoApp.initDataUnsafe, null, 2))
-      $('#theme_data').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2))
-      $('#regular_link').attr('href', $('#regular_link').attr('href') + location.hash)
-      $('#text_field').focus()
-
-      $('#ver').text(Telegram.WebApp.version)
-      $('#platform').text(Telegram.WebApp.platform)
-
-      if (DemoApp.initDataUnsafe.receiver) {
-        $('#peer_wrap').show()
-        $('#peer_name').text(
-          DemoApp.initDataUnsafe.receiver.first_name +
-            ' ' +
-            DemoApp.initDataUnsafe.receiver.last_name
-        )
-        if (DemoApp.initDataUnsafe.receiver.photo_url) {
-          $('#peer_photo').attr('src', DemoApp.initDataUnsafe.receiver.photo_url)
-        } else {
-          $('#peer_photo').hide()
-        }
-      } else if (DemoApp.initDataUnsafe.chat) {
-        $('#peer_wrap').show()
-        $('#peer_name').text(DemoApp.initDataUnsafe.chat.title)
-        if (DemoApp.initDataUnsafe.chat.photo_url) {
-          $('#peer_photo').attr('src', DemoApp.initDataUnsafe.chat.photo_url)
-        } else {
-          $('#peer_photo').hide()
-        }
-      }
-
-      DemoApp.checkInitData()
-
-      DemoApp.init()
-
-      function setViewportData() {
-        $('.viewport-border').attr(
-          'text',
-          window.innerWidth + ' x ' + round(Telegram.WebApp.viewportHeight, 2)
-        )
-        $('.viewport-stable_border').attr(
-          'text',
-          window.innerWidth +
-            ' x ' +
-            round(Telegram.WebApp.viewportStableHeight, 2) +
-            ' | is_expanded: ' +
-            (Telegram.WebApp.isExpanded ? 'true' : 'false')
-        )
-      }
-
-      Telegram.WebApp.setHeaderColor('secondary_bg_color')
-      Telegram.WebApp.onEvent('viewportChanged', setViewportData)
-      setViewportData()
-
-      var prev_bg_color_val = $('#bg_color_sel').val()
-      $('#bg_color_input').val(Telegram.WebApp.backgroundColor)
-      $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
-      $('#header_color_sel').val('secondary_bg_color')
-      $('#header_color_sel').on('change', function (e) {
-        var color_key = e.target.value
-        $('#top_sect').toggleClass('second', color_key == 'secondary_bg_color')
-        Telegram.WebApp.setHeaderColor(color_key)
-        $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
-      })
-      $('#bg_color_input').on('change', function (e) {
-        var color = e.target.value
-        $('#bg_color_val').text(color)
-        $('#bg_color_sel').val('custom')
-        prev_bg_color_val = $('#bg_color_sel').val()
-        Telegram.WebApp.setBackgroundColor(color)
-        $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
-      })
-      $('#bg_color_sel').on('change', function (e) {
-        var color_key = e.target.value
-        if (color_key == 'custom') {
-          $('#bg_color_sel').val(prev_bg_color_val)
-          $('#bg_color_input').focus().click()
-        } else {
-          $('#bg_color_val').text('custom...')
-          Telegram.WebApp.setBackgroundColor(color_key)
-          $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
-          $('#bg_color_input').val(Telegram.WebApp.backgroundColor)
-          prev_bg_color_val = $('#bg_color_sel').val()
-        }
-      })
-      Telegram.WebApp.onEvent('themeChanged', function () {
-        $('#bg_color_input').val(Telegram.WebApp.backgroundColor)
-        $('body').attr('style', '--bg-color:' + Telegram.WebApp.backgroundColor)
-      })
-    </script>
   </body>
 </html>
