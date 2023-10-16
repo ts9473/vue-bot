@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 declare global {
   interface Window {
     Telegram: any
+    TelegramWebviewProxy: any
   }
 }
 const Telegram = window.Telegram
