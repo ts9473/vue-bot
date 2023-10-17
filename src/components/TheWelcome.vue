@@ -15,7 +15,7 @@ WebApp.MainButton.onClick(function () {
   WebApp.showAlert('Main Button was clicked')
 })
 WebApp.MainButton.show()
-
+WebApp.isClosingConfirmationEnabled = true
 // Function to call showPopup API
 function showPopup() {
   WebApp.showPopup(
@@ -46,6 +46,15 @@ WebApp.setHeaderColor('secondary_bg_color')
 WebApp.onEvent('themeChanged', function () {
   document.body.setAttribute('style', '--bg-color:' + WebApp.backgroundColor)
 })
+function open1() {
+  WebApp.openTelegramLink('https://t.me/trendingapps')
+}
+function open2() {
+  WebApp.openLink('https://ton.org/')
+}
+function open3() {
+  WebApp.openLink('https://telegra.ph/api', { try_instant_view: true })
+}
 onMounted(() => {
   function setViewportData() {
     var sizeEl = document.getElementById('viewport-params-size')
@@ -71,17 +80,13 @@ onMounted(() => {
     <h1>Links</h1>
     <ul>
       <li>
-        <a href="javascript:WebApp.openTelegramLink('https://t.me/trendingapps');"
-          >Open link within Telegram</a
-        >
+        <div @click="open1">Open link within Telegram</div>
       </li>
       <li>
-        <a href="javascript:WebApp.openLink('https://ton.org/');">Open link in external browser</a>
+        <div @click="open2">Open link in external browser</div>
       </li>
       <li>
-        <a href="javascript:WebApp.openLink('https://telegra.ph/api',{try_instant_view:true});"
-          >Open link inside Telegram webview</a
-        >
+        <div @click="open3">Open link inside Telegram webview</div>
       </li>
     </ul>
 
