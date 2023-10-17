@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NavBar } from 'vant'
 import WebApp from '@twa-dev/sdk'
 import { useRouter } from 'vue-router'
 import { onMounted, onUnmounted } from 'vue'
